@@ -1,0 +1,33 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+      <config>
+        <interface xmlns="urn:ios">
+          <GigabitEthernet foreach="{/interface}">
+            <name>{id}</name>
+            <ip>
+              <address>
+                <primary>
+                  <address>{ip_address}</address>
+                  <mask>{netmask}</mask>
+                </primary>
+              </address>
+              <ospf>
+                <process-id>
+                  <id>{/ospf/process}</id>
+                  <area>{/ospf/area}</area>
+                </process-id>
+              </ospf>
+            </ip>
+          </GigabitEthernet>
+        </interface>
+        <router xmlns="urn:ios">
+          <ospf>
+            <id>{/ospf/process}</id>
+          </ospf>
+        </router>
+      </config>
+    </device>
+  </devices>
+</config-template>

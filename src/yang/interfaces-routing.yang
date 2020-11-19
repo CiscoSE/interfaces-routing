@@ -1,0 +1,71 @@
+module interfaces-routing {
+
+  namespace "http://example.com/interfaces-routing";
+  prefix interfaces-routing;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "EXAMPLE: Interface and routing configuration";
+
+  revision 2016-01-01 {
+    description
+      "Initial revision.";
+  }
+
+  list interfaces-routing {
+    description "Interface and routing service";
+
+    key name;
+    leaf name {
+      tailf:info "Unique service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint interfaces-routing-servicepoint;
+
+    leaf device {
+      description "Device to be configured with this service";
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+    list interface {
+      description "Interfaces that will be configured";
+      key id;
+      leaf id {
+        description "Gigabit interface ID. For example: 1";
+        type string;
+      }
+      leaf ip_address{
+        description "IP address. For example: 192.168.0.1";
+        type inet:ipv4-address; 
+      }
+      leaf netmask{
+        description "Netmask in decimal format. For example: 255.255.255.0";
+        type inet:ipv4-address; 
+      }
+    }
+    container ospf {
+      description "OSPF parameters";
+      leaf process {
+        description "OSPF process id";
+        type string;
+      }
+      leaf area {
+        description "OSPF area to be configured";
+        type string;
+      }
+    }
+  }
+}
